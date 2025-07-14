@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Autodestruct | Sécurisé & Éphémère</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    <meta name="color-scheme" content="dark light">
+    <script src="../libs/pdf-lib.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <span class="logo-icon" aria-label="Logo feu">🔥</span>
+            <h1>PDF Autodestructeur</h1>
+            <p class="subtitle">Cryptez ou déchiffrez vos PDF avec une date d'expiration. Simple, humain, sécurisé, et sans serveur.</p>
+        </header>
+        <nav class="tab-nav" aria-label="Choix de l'action">
+            <button id="tab-encrypt" class="tab-btn active" aria-controls="tab-content-encrypt">Chiffrer un PDF</button>
+            <button id="tab-decrypt" class="tab-btn" aria-controls="tab-content-decrypt">Déchiffrer un PDF</button>
+        </nav>
+        <main class="main-grid">
+            <section class="card card-create tab-content active" id="tab-content-encrypt" aria-labelledby="tab-encrypt">
+                <h2><span class="icon">🔒</span> Créer un PDF Protégé</h2>
+                <form id="pdf-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="pdf-upload">1. Choisissez un fichier PDF</label>
+                        <div class="file-drop-area" tabindex="0" aria-label="Zone de dépôt pour PDF">
+                            <span class="file-icon">📄</span>
+                            <span class="file-msg">Glissez-déposez ou cliquez pour choisir</span>
+                            <input type="file" id="pdf-upload" class="file-input" accept="application/pdf" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry-date">2. Définissez la date d'expiration</label>
+                        <input type="datetime-local" id="expiry-date" required>
+                    </div>
+                    <button type="submit" class="btn">Générer le PDF</button>
+                </form>
+                <div id="message" class="feedback" aria-live="polite"></div>
+                <div id="download-link" class="download-zone" style="display:none;"></div>
+            </section>
+            <section class="card card-decrypt tab-content" id="tab-content-decrypt" aria-labelledby="tab-decrypt" style="display:none;">
+                <h2><span class="icon">🔑</span> Déverrouiller un PDF</h2>
+                <form id="decrypt-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="protected-upload">1. Chargez le PDF protégé</label>
+                        <div class="file-drop-area" tabindex="0" aria-label="Zone de dépôt pour PDF protégé">
+                            <span class="file-icon">🛡️</span>
+                            <span class="file-msg">Glissez-déposez ou cliquez pour choisir</span>
+                            <input type="file" id="protected-upload" class="file-input" accept="application/pdf" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="decrypt-date">2. Entrez la date d'expiration</label>
+                        <input type="datetime-local" id="decrypt-date" required>
+                    </div>
+                    <button type="submit" class="btn">Déchiffrer & Télécharger</button>
+                </form>
+                <div id="decrypt-message" class="feedback" aria-live="polite"></div>
+                <div id="decrypt-download" class="download-zone" style="display:none;"></div>
+            </section>
+        </main>
+        <footer class="site-footer">
+            <p>Projet open source. Les fichiers sont traités localement dans votre navigateur.</p>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+    // JS pour le sélecteur d'onglets façon Netflix
+    const tabEncrypt = document.getElementById('tab-encrypt');
+    const tabDecrypt = document.getElementById('tab-decrypt');
+    const contentEncrypt = document.getElementById('tab-content-encrypt');
+    const contentDecrypt = document.getElementById('tab-content-decrypt');
+    function switchTab(tab) {
+        if(tab === 'encrypt') {
+            tabEncrypt.classList.add('active');
+            tabDecrypt.classList.remove('active');
+            contentEncrypt.style.display = '';
+            contentEncrypt.classList.add('active');
+            contentDecrypt.style.display = 'none';
+            contentDecrypt.classList.remove('active');
+        } else {
+            tabDecrypt.classList.add('active');
+            tabEncrypt.classList.remove('active');
+            contentDecrypt.style.display = '';
+            contentDecrypt.classList.add('active');
+            contentEncrypt.style.display = 'none';
+            contentEncrypt.classList.remove('active');
+        }
+    }
+    tabEncrypt.addEventListener('click', () => switchTab('encrypt'));
+    tabDecrypt.addEventListener('click', () => switchTab('decrypt'));
+    </script>
+</body>
+</html>
